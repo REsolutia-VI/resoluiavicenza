@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prenota Primo Incontro di Mediazione</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --gold: #c9a96e;
+    --gold-light: #e8d5b0;
+    --cream: #faf8f4;
+    --stone: #8a8070;
+    --soft: #f0ece4;
+    --red: #c0392b;
+    --green: #27695a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    padding: 2.5rem 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .logo-mark {
+    width: 48px; height: 48px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-mark svg { width: 22px; height: 22px; }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+  }
+
+  header p {
+    font-size: 0.78rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 0.2rem;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  /* STEP INDICATOR */
+  .steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 1.5rem;
+  }
+
+  .step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+
+  .step::after {
+    content: '';
+    position: absolute;
+    right: 0; top: 14px;
+    width: 1px; height: 12px;
+    background: var(--gold-light);
+  }
+
+  .step:last-child::after { display: none; }
+
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    color: var(--stone);
+    margin: 0 auto 0.4rem;
+    transition: all 0.3s;
+  }
+
+  .step.active .step-num {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+  }
+
+  .step.done .step-num {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .step-label {
+    font-size: 0.68rem;
+    color: var(--stone);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .step.active .step-label { color: var(--ink); font-weight: 500; }
+
+  /* PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; animation: fadeIn 0.4s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .panel-sub {
+    font-size: 0.85rem;
+    color: var(--stone);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* CARD */
+  .card {
+    background: white;
+    border: 1px solid var(--gold-light);
+    border-radius: 2px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* AUTH SECTION */
+  .auth-info {
+    background: var(--soft);
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.83rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: white;
+  }
+
+  .btn-primary:hover { background: #2d2d4e; transform: translateY(-1px); }
+
+  .btn-google {
+    background: white;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+
+  .btn-google:hover { background: var(--soft); }
+
+  .btn-confirm {
+    background: var(--green);
+    color: white;
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+
+  .btn-confirm:hover { background: #1f5244; }
+
+  .btn-confirm:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* CALENDAR GRID */
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .month-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+
+  .nav-btn {
+    background: none;
+    border: 1px solid var(--gold-light);
+    width: 34px; height: 34px;
+    border-radius: 1px;
+    cursor: pointer;
+    color: var(--stone);
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .nav-btn:hover { border-color: var(--gold); color: var(--ink); }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+
+  .cal-day-name {
+    text-align: center;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    padding-bottom: 0.5rem;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    border-radius: 1px;
+    cursor: default;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .cal-day.empty { }
+
+  .cal-day.out-range {
+    color: #ccc;
+  }
+
+  .cal-day.available {
+    background: var(--soft);
+    border: 1px solid var(--gold-light);
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .cal-day.available:hover {
+    background: var(--gold-light);
+    border-color: var(--gold);
+  }
+
+  .cal-day.selected {
+    background: var(--gold) !important;
+    border-color: var(--gold) !important;
+    color: white !important;
+  }
+
+  .cal-day.busy {
+    color: #bbb;
+    text-decoration: line-through;
+  }
+
+  .cal-day.today::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    color: var(--stone);
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 1px;
+  }
+
+  /* SLOT PICKER */
+  .slot-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    margin: 1.5rem 0 1rem;
+    color: var(--ink);
+  }
+
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .slot-btn {
+    padding: 0.9rem;
+    border: 1.5px solid var(--gold-light);
+    background: white;
+    border-radius: 1px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .slot-btn:hover {
+    border-color: var(--gold);
+    background: var(--soft);
+  }
+
+  .slot-btn.selected {
+    border-color: var(--gold);
+    background: var(--gold);
+    color: white;
+  }
+
+  .slot-btn.busy {
+    border-color: #eee;
+    background: #f9f9f9;
+    color: #ccc;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+
+  .slot-time {
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  .slot-end {
+    font-size: 0.72rem;
+    margin-top: 0.2rem;
+    opacity: 0.7;
+  }
+
+  /* SUMMARY */
+  .summary-box {
+    background: var(--soft);
+    border: 1px solid var(--gold-light);
+    border-radius: 2px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--gold-light);
+    font-size: 0.85rem;
+  }
+
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { color: var(--stone); }
+  .summary-value { font-weight: 500; }
+
+  /* SUCCESS */
+  .success-icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+
+  .success-box { text-align: center; padding: 2rem 0; }
+
+  .success-box h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+  }
+
+  .success-box p {
+    color: var(--stone);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .event-card {
+    background: white;
+    border: 1px solid var(--gold-light);
+    border-left: 3px solid var(--green);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    text-align: left;
+  }
+
+  .event-card .ev-title {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+
+  .event-card .ev-detail {
+    font-size: 0.82rem;
+    color: var(--stone);
+    line-height: 1.6;
+  }
+
+  /* STATUS MSG */
+  .status-msg {
+    padding: 0.8rem 1rem;
+    border-radius: 2px;
+    font-size: 0.82rem;
+    margin: 1rem 0;
+    display: none;
+  }
+
+  .status-msg.error { background: #fdecea; color: var(--red); display: block; }
+  .status-msg.loading { background: var(--soft); color: var(--stone); display: block; }
+
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid var(--gold-light);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* CONFIG PANEL */
+  .config-note {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 2px;
+    padding: 1.5rem;
+    font-size: 0.8rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  .config-note code {
+    background: rgba(255,255,255,0.1);
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    font-family: monospace;
+    font-size: 0.78rem;
+    color: var(--gold);
+  }
+
+  .config-note ol { padding-left: 1.2rem; }
+  .config-note li { margin-bottom: 0.4rem; }
+
+  .input-group { margin-bottom: 1.2rem; }
+  .input-group label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.4rem;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gold-light);
+    border-radius: 1px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--ink);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .input-group input:focus { border-color: var(--gold); }
+
+  .mediatore-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  @media (max-width: 480px) {
+    header { padding: 1.5rem; }
+    main { padding: 2rem 1rem 4rem; }
+    .slots-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.5">
+      <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9"/>
+      <path d="M12 8v4l3 3"/>
+      <path d="M18 3l3 3-3 3"/>
+    </svg>
+  </div>
+  <div>
+    <h1>Primo Incontro di Mediazione</h1>
+    <p id="mediatore-display">Seleziona una data disponibile</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- STEPS -->
+  <div class="steps">
+    <div class="step active" id="step-ind-1">
+      <div class="step-num">1</div>
+      <div class="step-label">Calendario</div>
+    </div>
+    <div class="step" id="step-ind-2">
+      <div class="step-num">2</div>
+      <div class="step-label">Data & Ora</div>
+    </div>
+    <div class="step" id="step-ind-3">
+      <div class="step-num">3</div>
+      <div class="step-label">Conferma</div>
+    </div>
+  </div>
+
+  <!-- PANEL 1: AUTH / CONFIG -->
+  <div class="panel active" id="panel-1">
+    <p class="panel-title">Connetti Google Calendar</p>
+    <p class="panel-sub">Per visualizzare le date disponibili è necessario autorizzare l'accesso al tuo calendario Google.</p>
+
+    <!-- FIRST TIME SETUP (shown if no client ID) -->
+    <div id="setup-section">
+      <div class="config-note">
+        <strong style="color:var(--gold)">⚙ Configurazione una-tantum</strong><br><br>
+        Prima di iniziare, inserisci il tuo <strong>Google OAuth Client ID</strong>.<br>
+        Per ottenerlo:<br><br>
+        <ol>
+          <li>Vai su <code>console.cloud.google.com</code></li>
+          <li>Crea un progetto (o selezionane uno esistente)</li>
+          <li>Menu → <code>API e servizi</code> → <code>Credenziali</code></li>
+          <li>Crea credenziali → <code>ID client OAuth 2.0</code></li>
+          <li>Tipo applicazione: <code>Applicazione web</code></li>
+          <li>Origini JavaScript autorizzate: inserisci l'URL di questa pagina</li>
+          <li>Copia il <code>Client ID</code> e incollalo qui sotto</li>
+          <li>Attiva l'API Google Calendar dalla <code>Libreria API</code></li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <div class="input-group">
+          <label>Il tuo nome (mostrato agli utenti)</label>
+          <input type="text" id="mediatore-name" placeholder="es. Avv. Mario Rossi — Mediatore" />
+        </div>
+        <div class="input-group">
+          <label>Google OAuth Client ID</label>
+          <input type="text" id="client-id-input" placeholder="xxxxxxxxxx.apps.googleusercontent.com" />
+        </div>
+        <button class="btn btn-primary" onclick="saveConfig()">Salva e continua →</button>
+      </div>
+    </div>
+
+    <!-- AUTH BUTTON (shown after config) -->
+    <div id="auth-section" style="display:none">
+      <div class="auth-info">
+        Accedi con il tuo account Google per autorizzare la lettura del calendario e la creazione di eventi. L'accesso viene usato esclusivamente per questo strumento.
+      </div>
+      <div class="card">
+        <p style="font-size:0.85rem; color:var(--stone); margin-bottom:1.2rem;">
+          Connesso come: <span class="mediatore-name" id="config-name-display"></span>
+        </p>
+        <button class="btn btn-google" onclick="handleAuthClick()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.826.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
+          Accedi con Google
+        </button>
+        <div id="status-auth" class="status-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: CALENDAR + SLOTS -->
+  <div class="panel" id="panel-2">
+    <p class="panel-title">Scegli data e orario</p>
+    <p class="panel-sub" id="range-info">Visualizzazione slot disponibili nel periodo consentito per il primo incontro (22–40 giorni da oggi).</p>
+
+    <div class="card">
+      <div class="month-nav">
+        <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+        <span class="month-name" id="month-display"></span>
+        <button class="nav-btn" onclick="changeMonth(1)">›</button>
+      </div>
+
+      <div class="cal-grid" id="cal-grid"></div>
+
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--soft); border:1px solid var(--gold-light)"></div>
+          <span>Disponibile</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:var(--gold)"></div>
+          <span>Selezionato</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-dot" style="background:#f9f9f9; border:1px solid #eee"></div>
+          <span>Fuori periodo / occupato</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="slot-section" style="display:none">
+      <div class="card">
+        <p class="slot-title" id="slot-date-title"></p>
+        <div class="slots-grid" id="slots-grid"></div>
+        <div id="status-slots" class="status-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: CONFIRM -->
+  <div class="panel" id="panel-3">
+    <p class="panel-title">Conferma appuntamento</p>
+    <p class="panel-sub">Verifica i dettagli e conferma. L'evento verrà aggiunto automaticamente al tuo Google Calendar.</p>
+
+    <div class="card">
+      <div class="summary-box" id="summary-box"></div>
+      <button class="btn btn-confirm" id="confirm-btn" onclick="createEvent()">
+        ✓ Conferma e aggiungi al calendario
+      </button>
+      <div id="status-confirm" class="status-msg"></div>
+    </div>
+  </div>
+
+  <!-- PANEL 4: SUCCESS -->
+  <div class="panel" id="panel-4">
+    <div class="success-box">
+      <div class="success-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2>Appuntamento confermato</h2>
+      <p>L'evento è stato aggiunto al tuo Google Calendar.<br>L'incontro di mediazione è fissato.</p>
+
+      <div class="event-card" id="success-event-card"></div>
+
+      <button class="btn btn-primary" onclick="resetApp()" style="margin-top:1.5rem">
+        ← Nuovo appuntamento
+      </button>
+    </div>
+  </div>
+
+</main>
+
+<!-- Google API -->
+<script src="https://apis.google.com/js/api.js"></script>
+<script src="https://accounts.google.com/gsi/client"></script>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const SCOPES = 'https://www.googleapis.com/auth/calendar';
+const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+const SLOT_HOURS = [9, 11, 15, 17];
+const SLOT_DURATION = 2; // ore
+const DAYS_MIN = 22;
+const DAYS_MAX = 40;
+
+let CLIENT_ID = localStorage.getItem('med_client_id') || '';
+let MEDIATORE_NAME = localStorage.getItem('med_name') || '';
+
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+let accessToken = null;
+
+let currentDate = new Date();
+let selectedDay = null;
+let selectedSlot = null;
+let busyTimes = [];
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.onload = function() {
+  if (CLIENT_ID && MEDIATORE_NAME) {
+    showAuthSection();
+  }
+  updateMediatoreDisplay();
+};
+
+function gapiLoaded() {
+  gapi.load('client', initializeGapiClient);
+}
+
+async function initializeGapiClient() {
+  await gapi.client.init({
+    discoveryDocs: [DISCOVERY_DOC],
+  });
+  gapiInited = true;
+  maybeEnableButtons();
+}
+
+function gisLoaded() {
+  if (!CLIENT_ID) return;
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: '',
+  });
+  gisInited = true;
+  maybeEnableButtons();
+}
+
+function maybeEnableButtons() {}
+
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+function saveConfig() {
+  const name = document.getElementById('mediatore-name').value.trim();
+  const cid = document.getElementById('client-id-input').value.trim();
+  if (!name || !cid) {
+    alert('Inserisci sia il nome che il Client ID.');
+    return;
+  }
+  localStorage.setItem('med_name', name);
+  localStorage.setItem('med_client_id', cid);
+  CLIENT_ID = cid;
+  MEDIATORE_NAME = name;
+  showAuthSection();
+  updateMediatoreDisplay();
+  // Reinit GIS
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: '',
+  });
+  gisInited = true;
+}
+
+function showAuthSection() {
+  document.getElementById('setup-section').style.display = 'none';
+  document.getElementById('auth-section').style.display = 'block';
+  document.getElementById('config-name-display').textContent = MEDIATORE_NAME;
+}
+
+function updateMediatoreDisplay() {
+  if (MEDIATORE_NAME) {
+    document.getElementById('mediatore-display').textContent = MEDIATORE_NAME;
+  }
+}
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function handleAuthClick() {
+  const statusEl = document.getElementById('status-auth');
+
+  if (!gisInited || !gapiInited) {
+    statusEl.className = 'status-msg loading';
+    statusEl.innerHTML = '<span class="spinner"></span>Inizializzazione in corso...';
+    // Try again in 1s
+    setTimeout(handleAuthClick, 1000);
+    return;
+  }
+
+  statusEl.className = 'status-msg loading';
+  statusEl.innerHTML = '<span class="spinner"></span>Connessione a Google...';
+
+  tokenClient.callback = async (resp) => {
+    if (resp.error) {
+      statusEl.className = 'status-msg error';
+      statusEl.textContent = 'Errore di autenticazione: ' + resp.error;
+      return;
+    }
+    accessToken = gapi.client.getToken();
+    statusEl.style.display = 'none';
+    goToPanel(2);
+    initCalendar();
+  };
+
+  tokenClient.requestAccessToken({ prompt: 'consent' });
+}
+
+// ─── CALENDAR ────────────────────────────────────────────────────────────────
+function initCalendar() {
+  const today = new Date();
+  const minDate = new Date(today);
+  minDate.setDate(today.getDate() + DAYS_MIN);
+  currentDate = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+  renderCalendar();
+}
+
+function changeMonth(delta) {
+  currentDate.setMonth(currentDate.getMonth() + delta);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const minDate = new Date(today);
+  minDate.setDate(today.getDate() + DAYS_MIN);
+  const maxDate = new Date(today);
+  maxDate.setDate(today.getDate() + DAYS_MAX);
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+
+  const monthNames = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+    'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+  document.getElementById('month-display').textContent = `${monthNames[month]} ${year}`;
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  // Day names (Mon-Sun)
+  const dayNames = ['Lu','Ma','Me','Gi','Ve','Sa','Do'];
+  dayNames.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-name';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(year, month, 1);
+  let startDow = firstDay.getDay(); // 0=Sun
+  startDow = (startDow === 0) ? 6 : startDow - 1; // Convert to Mon=0
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Empty cells
+  for (let i = 0; i < startDow; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(year, month, d);
+    date.setHours(0,0,0,0);
+
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+
+    const isSelected = selectedDay &&
+      selectedDay.getFullYear() === year &&
+      selectedDay.getMonth() === month &&
+      selectedDay.getDate() === d;
+
+    if (isSelected) {
+      el.classList.add('selected');
+    } else if (date >= minDate && date <= maxDate && date.getDay() !== 0 && date.getDay() !== 6) {
+      el.classList.add('available');
+      el.onclick = () => selectDay(date);
+    } else {
+      el.classList.add('out-range');
+    }
+
+    if (date.getTime() === today.getTime()) el.classList.add('today');
+
+    grid.appendChild(el);
+  }
+}
+
+async function selectDay(date) {
+  selectedDay = date;
+  selectedSlot = null;
+  renderCalendar();
+
+  const slotSection = document.getElementById('slot-section');
+  slotSection.style.display = 'block';
+
+  const dateStr = date.toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('slot-date-title').textContent = '📅 ' + capitalize(dateStr);
+
+  const statusEl = document.getElementById('status-slots');
+  statusEl.className = 'status-msg loading';
+  statusEl.innerHTML = '<span class="spinner"></span>Controllo disponibilità...';
+  document.getElementById('slots-grid').innerHTML = '';
+
+  // Fetch busy times for this day
+  const timeMin = new Date(date); timeMin.setHours(0,0,0,0);
+  const timeMax = new Date(date); timeMax.setHours(23,59,59,999);
+
+  try {
+    const resp = await gapi.client.calendar.freebusy.query({
+      timeMin: timeMin.toISOString(),
+      timeMax: timeMax.toISOString(),
+      items: [{ id: 'primary' }]
+    });
+
+    busyTimes = resp.result.calendars.primary.busy || [];
+    statusEl.style.display = 'none';
+    renderSlots(date, busyTimes);
+  } catch (err) {
+    statusEl.className = 'status-msg error';
+    statusEl.textContent = 'Errore nel recupero del calendario: ' + (err.result?.error?.message || err.message);
+  }
+}
+
+function renderSlots(date, busyTimes) {
+  const grid = document.getElementById('slots-grid');
+  grid.innerHTML = '';
+
+  SLOT_HOURS.forEach(hour => {
+    const slotStart = new Date(date);
+    slotStart.setHours(hour, 0, 0, 0);
+    const slotEnd = new Date(date);
+    slotEnd.setHours(hour + SLOT_DURATION, 0, 0, 0);
+
+    const isBusy = busyTimes.some(b => {
+      const bs = new Date(b.start);
+      const be = new Date(b.end);
+      return slotStart < be && slotEnd > bs;
+    });
+
+    const btn = document.createElement('div');
+    btn.className = 'slot-btn' + (isBusy ? ' busy' : '');
+
+    const endHour = hour + SLOT_DURATION;
+    btn.innerHTML = `<div class="slot-time">${pad(hour)}:00</div><div class="slot-end">fino alle ${pad(endHour)}:00</div>`;
+
+    if (!isBusy) {
+      btn.onclick = () => selectSlot(slotStart, slotEnd, btn);
+    }
+
+    grid.appendChild(btn);
+  });
+}
+
+function selectSlot(start, end, btn) {
+  document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedSlot = { start, end };
+
+  // Build summary
+  showSummary();
+}
+
+function showSummary() {
+  const dateStr = selectedDay.toLocaleDateString('it-IT', {
+    weekday:'long', day:'numeric', month:'long', year:'numeric'
+  });
+
+  document.getElementById('summary-box').innerHTML = `
+    <div class="summary-row">
+      <span class="summary-label">Data</span>
+      <span class="summary-value">${capitalize(dateStr)}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Orario</span>
+      <span class="summary-value">${pad(selectedSlot.start.getHours())}:00 – ${pad(selectedSlot.end.getHours())}:00</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Durata</span>
+      <span class="summary-value">${SLOT_DURATION} ore</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Tipo</span>
+      <span class="summary-value">Primo incontro di mediazione</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Mediatore</span>
+      <span class="summary-value">${MEDIATORE_NAME}</span>
+    </div>
+  `;
+
+  goToPanel(3);
+}
+
+// ─── CREATE EVENT ─────────────────────────────────────────────────────────────
+async function createEvent() {
+  const btn = document.getElementById('confirm-btn');
+  const statusEl = document.getElementById('status-confirm');
+  btn.disabled = true;
+  statusEl.className = 'status-msg loading';
+  statusEl.innerHTML = '<span class="spinner"></span>Creazione evento in corso...';
+
+  const event = {
+    summary: 'Primo incontro di mediazione',
+    description: `Primo incontro di mediazione — ${MEDIATORE_NAME}`,
+    start: {
+      dateTime: selectedSlot.start.toISOString(),
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    },
+    end: {
+      dateTime: selectedSlot.end.toISOString(),
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    }
+  };
+
+  try {
+    await gapi.client.calendar.events.insert({
+      calendarId: 'primary',
+      resource: event
+    });
+
+    statusEl.style.display = 'none';
+    btn.disabled = false;
+
+    // Show success
+    const dateStr = selectedDay.toLocaleDateString('it-IT', {
+      weekday:'long', day:'numeric', month:'long', year:'numeric'
+    });
+
+    document.getElementById('success-event-card').innerHTML = `
+      <div class="ev-title">📅 Primo incontro di mediazione</div>
+      <div class="ev-detail">
+        ${capitalize(dateStr)}<br>
+        ore ${pad(selectedSlot.start.getHours())}:00 – ${pad(selectedSlot.end.getHours())}:00<br>
+        Aggiunto al tuo Google Calendar (primario)
+      </div>
+    `;
+
+    goToPanel(4);
+
+  } catch (err) {
+    statusEl.className = 'status-msg error';
+    statusEl.textContent = 'Errore: ' + (err.result?.error?.message || err.message);
+    btn.disabled = false;
+  }
+}
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+function goToPanel(n) {
+  document.querySelectorAll('.panel').forEach((p, i) => {
+    p.classList.toggle('active', i === n - 1);
+  });
+
+  for (let i = 1; i <= 3; i++) {
+    const el = document.getElementById('step-ind-' + i);
+    el.classList.remove('active', 'done');
+    if (i < n) el.classList.add('done');
+    else if (i === n) el.classList.add('active');
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetApp() {
+  selectedDay = null;
+  selectedSlot = null;
+  busyTimes = [];
+  goToPanel(2);
+  initCalendar();
+  document.getElementById('slot-section').style.display = 'none';
+}
+
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+function pad(n) { return String(n).padStart(2, '0'); }
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+</script>
+
+<!-- Load Google APIs -->
+<script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+<script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+
+</body>
+</html>
